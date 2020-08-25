@@ -3,7 +3,9 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import VueFormulate from '@braid/vue-formulate'
 
+Vue.use(VueFormulate)
 Vue.config.productionTip = false
 
 new Vue({
