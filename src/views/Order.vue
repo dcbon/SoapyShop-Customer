@@ -23,7 +23,10 @@
                     <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-plus" @click.prevent="increase"></span></button>
                   </div>
                 </td>
-                <td><div class="btn btn-btm" href="" @click.prevent="deleteItem(order.ProductId)"><span class="fas fa-trash"></span></div></td>
+                <td>
+                  <div class="btn btn-btm" href="" @click.prevent="editItem(order.ProductId)"><span class="fas fa-sync-alt"></span></div>
+                  <div class="btn btn-btm" href="" @click.prevent="deleteItem(order.ProductId)"><span class="fas fa-trash"></span></div>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -37,6 +40,16 @@
 import Navbar from '@/components/Navbar.vue'
 export default {
   name: 'Order',
+  data () {
+    return {
+      id: '',
+      name: '',
+      price: '',
+      stock: '',
+      img: '',
+      amount: 0
+    }
+  },
   components: {
     Navbar
   },
@@ -47,7 +60,16 @@ export default {
   },
   methods: {
     deleteItem (id) {
-
+      this.$store.dispatch('deleteItem', id)
+    },
+    editItem (payload) {
+      let payload = {
+        UserId: localStorage.id,
+        ProductId: this.id,
+        quantity: this.amount,
+        status: false
+      }
+      this.$store.dispatch('editItem', payload)
     }
   },
   created () {

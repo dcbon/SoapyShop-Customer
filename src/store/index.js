@@ -150,7 +150,27 @@ export default new Vuex.Store({
           context.commit('setOrders', data)
         })
         .catch(err => console.log(err, 'err read order'))
-    }
+    },
+    updateOrder (context, payload) {
+      let id = localStorage.id
+      axios({
+        url: `${id}/cart/${payload.id}`,
+        method: 'PUT',
+        data: payload
+      })
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+    },
+    deleteItem (context, id) {
+      let id = localStorage.id
+      axios({
+        url: `${id}/cart/${payload.id}`,
+        method: 'DELETE',
+        data: payload
+      })
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
+    },
   },
   modules: {
   }
