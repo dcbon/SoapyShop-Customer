@@ -8,7 +8,7 @@
       <div class="">
         <ul class="nav justify-content-between lead h5">
           <li class="nav-item px-3">
-            <a class="nav-link" href="#" @click.prevent="changePage('Login')"><span class="far fa-user-circle mr-2"></span>Log In</a>
+            <a class="nav-link" v-bind:class="{ disabled: logged }" href="#" @click.prevent="changePage('Login')"><span class="far fa-user-circle mr-2"></span>{{name}}</a>
           </li>
           <li class="nav-item px-3">
             <a class="nav-link active" href="#" @click.prevent="changePage('Home')">Home</a>
@@ -34,6 +34,19 @@
 <script>
 export default {
   name: 'Navbar',
+  data () {
+    return {
+      logged: false
+    }
+  },
+  computed: {
+    name () {
+      this.logged = true
+      let name = this.$store.state.user
+      if (!name) return 'Log In'
+      else return name 
+    }
+  },
   methods: {
     changePage (name) {
       this.$router.push({ name: `${name}` })

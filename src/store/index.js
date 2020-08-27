@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     categories: [],
     products: [],
-    orders: {}
+    orders: {},
+    user: ''
   },
   mutations: {
     setCategories (state, data) {
@@ -23,6 +24,10 @@ export default new Vuex.Store({
     setOrders (state, data) {
       state.orders = data.carts
       // console.log(state.orders, '===state');
+    },
+    setUser (state, data) {
+      // console.log(data, '===set user');
+      state.user = data
     }
   },
   actions: {
@@ -55,6 +60,7 @@ export default new Vuex.Store({
           console.log(data, '===data login');
           localStorage.setItem('access_token', data.data.access_token)
           localStorage.setItem('id', data.data.id)
+          context.commit('setUser', data.data.name)
           router.push({ name: 'Home' })
         })
         .catch(err => {

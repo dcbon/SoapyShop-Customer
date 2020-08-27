@@ -35,7 +35,6 @@
                   </div>
                   <div class="btn btn-dark btn-block mb-2" @click.prevent="addToCart">Add to cart</div>
                   <a href="" class="small" @click.prevent="">View More Details</a>
-                  <!-- <router-link :to="/products/`${product.id}`"> -->
                 </div>
               </div>
             </div>
@@ -85,13 +84,15 @@ export default {
       else this.amount = this.amount+1
     },
     addToCart () {
-      let payload = {
-        UserId: localStorage.id,
-        ProductId: this.id,
-        quantity: this.amount,
-        status: true
+      if (!this.amount) {
+        let payload = {
+          UserId: localStorage.id,
+          ProductId: this.id,
+          quantity: this.amount,
+          status: true
+        }
+        this.$store.dispatch('addToCart', payload)
       }
-      this.$store.dispatch('addToCart', payload)
     }
   },
   created () {
