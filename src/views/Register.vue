@@ -21,7 +21,7 @@
                 input-class="form-control"
                 label-class="form-label"
                 outer-class="mb-3"
-                errors-class="list-group list-group-flush mb-3"
+                errors-class="list-group list-group-flush mb-3 text-muted"
                 error-class="list-group-item text-danger small "
               />
               <FormulateInput
@@ -33,7 +33,7 @@
                 input-class="form-control"
                 label-class="form-label"
                 outer-class="mb-3"
-                errors-class="list-group list-group-flush mb-3"
+                errors-class="list-group list-group-flush mb-3 text-muted"
                 error-class="list-group-item text-danger small "
               />
               <div class="row mb-3">
@@ -42,11 +42,12 @@
                   type="password"
                   label="Password"
                   placeholder="Your password"
-                  help="Note: We're fresh out of strawberries and bananas."
+                  help="Password must be 6 to 12 characters."
                   validation="required|max:12|min:6"
+                  help-class="small text-muted"
                   input-class="form-control"
                   label-class="form-label"
-                  errors-class="list-group list-group-flush mb-2"
+                  errors-class="list-group list-group-flush mb-2 text-muted"
                   error-class="list-group-item text-danger small "
                   class="col"
                 />
@@ -59,7 +60,7 @@
                   validation-name="Confirmation"
                   input-class="form-control"
                   label-class="form-label"
-                  errors-class="list-group list-group-flush mb-2"
+                  errors-class="list-group list-group-flush mb-2 text-muted"
                   error-class="list-group-item text-danger small "
                   class="col"
                 />
@@ -69,10 +70,7 @@
                 label="Sign Up"
                 input-class="btn btn-primary"
               />
-              <pre
-                class="code"
-                v-text="formValues"
-              />
+              <small class="form-text text-muted">Already have an account? <a class="" @click.prevent="changePage">Sign in here.</a></small>
             </FormulateForm>
           </div>
         </div>
@@ -94,6 +92,10 @@ export default {
     register () {
       let payload = this.formValues
       this.$store.dispatch('register', payload)
+    },
+    changePage () {
+      let page = 'Login'
+      this.$router.push({ name: page })
     }
   }
 }

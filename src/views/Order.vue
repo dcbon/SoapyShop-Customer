@@ -16,7 +16,13 @@
             <tbody>
               <tr v-for="order in orders" :key="order.id">
                 <td>{{ order.Product.name }}</td>
-                <th>{{ order.quantity }}</th>
+                <td>
+                  <div class="input-group mb-2">
+                    <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-minus" @click.prevent="decrease"></span></button>
+                    <input disabled :value="amount" type="number" class="form-control text-center" :placeholder="order.quantity" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-plus" @click.prevent="increase"></span></button>
+                  </div>
+                </td>
                 <td><div class="btn btn-btm" href="" @click.prevent="deleteItem(order.ProductId)"><span class="fas fa-trash"></span></div></td>
               </tr>
             </tbody>

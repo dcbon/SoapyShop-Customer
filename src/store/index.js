@@ -121,6 +121,7 @@ export default new Vuex.Store({
         })
     },
     addToCart (context, payload) {
+      console.log(payload, '===payload add to cart');
       axios({
         url: `/${payload.id}/cart`,
         method: 'POST',

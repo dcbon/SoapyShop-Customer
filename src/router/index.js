@@ -22,7 +22,12 @@ Vue.use(VueRouter)
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      let isAuthenticated = localStorage.access_token
+      if (isAuthenticated) next({ name: 'Home' })
+      else next()
+    }
   },
   {
     path: '/products',
@@ -32,7 +37,12 @@ Vue.use(VueRouter)
   {
     path: '/order',
     name: 'Order',
-    component: Order
+    component: Order,
+    beforeEnter: (to, from, next) => {
+      let isAuthenticated = localStorage.access_token
+      if (!isAuthenticated) next({ name: 'Login' })
+      else next()
+    }
   }
 ]
 

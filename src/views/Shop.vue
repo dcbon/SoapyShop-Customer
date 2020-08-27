@@ -30,7 +30,7 @@
                 <div class="btm">
                   <div class="input-group mb-2">
                     <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-minus" @click.prevent="decrease"></span></button>
-                    <input disabled :value="amount" type="number" class="form-control text-center" placeholder="1" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                    <input disabled :value="amount || 0" type="number" class="form-control text-center" placeholder="1" aria-label="Example text with button addon" aria-describedby="button-addon1">
                     <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-plus" @click.prevent="increase"></span></button>
                   </div>
                   <div class="btn btn-dark btn-block mb-2" @click.prevent="addToCart">Add to cart</div>
@@ -76,8 +76,7 @@ export default {
       this.img = img
     },
     decrease () {
-      if (!amount) this.amount = this.amount-1
-      else this.amount = 0
+      if (this.amount !== 0) this.amount = this.amount-1
     },
     increase () {
       if (this.amount >= this.stock) this.amount = this.stock
@@ -89,9 +88,10 @@ export default {
           UserId: localStorage.id,
           ProductId: this.id,
           quantity: this.amount,
-          status: true
+          status: false
         }
         this.$store.dispatch('addToCart', payload)
+        $('#exampleModal').modal('hide')
       }
     }
   },

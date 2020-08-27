@@ -21,7 +21,7 @@
                 input-class="form-control"
                 label-class="form-label"
                 outer-class="mb-3"
-                errors-class="list-group list-group-flush mb-3"
+                errors-class="list-group list-group-flush mb-3 text-muted"
                 error-class="list-group-item text-danger small "
               />
               <FormulateInput
@@ -33,7 +33,7 @@
                 input-class="form-control"
                 label-class="form-label"
                 outer-class="mb-3"
-                errors-class="list-group list-group-flush mb-2"
+                errors-class="list-group list-group-flush mb-2 text-muted"
                 error-class="list-group-item text-danger small "
                 class="col"
               />
@@ -47,7 +47,7 @@
                 input-class="form-control"
                 label-class="form-label"
                 outer-class="mb-3"
-                errors-class="list-group list-group-flush mb-2"
+                errors-class="list-group list-group-flush mb-2 text-muted"
                 error-class="list-group-item text-danger small "
                 class="col"
               />
@@ -58,10 +58,7 @@
                 label="Sign In"
                 input-class="btn btn-primary"
               />
-              <pre
-                class="code"
-                v-text="formValues"
-              />
+              <small class="form-text text-muted">Didn't have an account? <a class="" @click.prevent="changePage">Sign up here.</a></small>
             </FormulateForm>
           </div>
         </div>
@@ -82,6 +79,10 @@ export default {
     login () {
       let payload = this.formValues
       this.$store.dispatch('login', payload)
+    },
+    changePage () {
+      let page = 'Register'
+      this.$router.push({ name: page })
     }
   }
 }

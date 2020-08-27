@@ -8,7 +8,7 @@
       <div class="">
         <ul class="nav justify-content-between lead h5">
           <li class="nav-item px-3">
-            <a class="nav-link" v-bind:class="{ disabled: logged }" href="#" @click.prevent="changePage('Login')"><span class="far fa-user-circle mr-2"></span>{{name}}</a>
+            <a class="nav-link" href="#" @click.prevent="changePage('Login')"><span class="far fa-user-circle mr-2"></span>{{user}}</a>
           </li>
           <li class="nav-item px-3">
             <a class="nav-link active" href="#" @click.prevent="changePage('Home')">Home</a>
@@ -25,6 +25,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#" @click.prevent="changePage('Order')"><span class="far fa-shopping-bag"></span></a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click.prevent="logout"><span class="far fa-sign-out-alt"></span></a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -36,20 +39,23 @@ export default {
   name: 'Navbar',
   data () {
     return {
-      logged: false
     }
   },
   computed: {
-    name () {
-      this.logged = true
-      let name = this.$store.state.user
-      if (!name) return 'Log In'
-      else return name 
+    user () {
+      let user = this.$store.state.user
+      if (!localStorage.access_token) {
+        return 'Sign In'
+      }
+      else return user 
     }
   },
   methods: {
     changePage (name) {
       this.$router.push({ name: `${name}` })
+    },
+    logout () {
+      this.$store.dispatch('logout')
     }
   }
 }
@@ -57,7 +63,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-img {
-  width: 50px;
-}
 </style>
