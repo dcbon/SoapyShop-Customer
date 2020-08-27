@@ -42,7 +42,8 @@
                   type="password"
                   label="Password"
                   placeholder="Your password"
-                  validation="required"
+                  help="Note: We're fresh out of strawberries and bananas."
+                  validation="required|max:12|min:6"
                   input-class="form-control"
                   label-class="form-label"
                   errors-class="list-group list-group-flush mb-2"
@@ -65,7 +66,7 @@
               </div>
               <FormulateInput
                 type="submit"
-                label="Sign up"
+                label="Sign Up"
                 input-class="btn btn-primary"
               />
               <pre
@@ -78,8 +79,6 @@
       </div>
     </div>
 
-
-  <!-- login -->
   </div>
 </template>
 
