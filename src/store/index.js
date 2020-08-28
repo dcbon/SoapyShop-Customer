@@ -10,7 +10,9 @@ export default new Vuex.Store({
     categories: [],
     products: [],
     orders: {},
-    user: ''
+    total: 0,
+    history: {},
+    detail: {}
   },
   mutations: {
     setCategories (state, data) {
@@ -25,9 +27,20 @@ export default new Vuex.Store({
       state.orders = data.carts
       // console.log(state.orders, '===state');
     },
-    setUser (state, data) {
-      // console.log(data, '===set user');
-      state.user = data
+    setTotal (state, data) {
+      let total = 0
+      data.carts.forEach(e => {
+        total += e.subtotal
+      });
+      state.total = total
+      console.log(state.total, '===state');
+    },
+    setHistory (state, data) {
+      state.history = data.carts
+      // console.log(state.orders, '===state');
+    },
+    setDetail (state, data) {
+      state.detail = data
     }
   },
   actions: {
@@ -60,7 +73,7 @@ export default new Vuex.Store({
           console.log(data, '===data login');
           localStorage.setItem('access_token', data.data.access_token)
           localStorage.setItem('id', data.data.id)
-          context.commit('setUser', data.data.name)
+          localStorage.setItem('name', data.data.name)
           router.push({ name: 'Home' })
         })
         .catch(err => {
@@ -123,7 +136,7 @@ export default new Vuex.Store({
     addToCart (context, payload) {
       console.log(payload, '===payload add to cart');
       axios({
-        url: `/${payload.id}/cart`,
+        url: `/cart`,
         method: 'POST',
         headers: {
           access_token: localStorage.access_token
@@ -139,7 +152,7 @@ export default new Vuex.Store({
     getOrder (context) {
       let id = localStorage.id
       axios({
-        url: `/${id}/cart`,
+        url: `/cart`,
         method: 'GET',
         headers: {
           access_token: localStorage.access_token
@@ -148,29 +161,88 @@ export default new Vuex.Store({
         .then(({data}) => {
           console.log(data, '===get order');
           context.commit('setOrders', data)
+          context.commit('setTotal', data)
+        })
+        .catch(err => console.log(err, 'err read order'))
+    },
+    getHistory (context) {
+      let id = localStorage.id
+      axios({
+        url: `/cart/history`,
+        method: 'GET',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({data}) => {
+          console.log(data, '===get order');
+          context.commit('setHistory', data)
         })
         .catch(err => console.log(err, 'err read order'))
     },
     updateOrder (context, payload) {
-      let id = localStorage.id
       axios({
-        url: `${id}/cart/${payload.id}`,
+        url: `/cart/${payload.id}`,
         method: 'PUT',
-        data: payload
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: {
+          ProductId: payload.ProductId,
+          quantity: payload.quantity
+        }
       })
-        .then(data => console.log(data))
-        .catch(err => console.log(err))
+        .then(data => {
+          console.log(data, '===updte order')
+          context.dispatch('getOrder')
+        })
+        .catch(err => console.log(err, '===err update order'))
     },
-    deleteItem (context, id) {
-      let id = localStorage.id
+    deleteItem (context, payload) {
       axios({
-        url: `${id}/cart/${payload.id}`,
+        url: `/cart/${payload.id}`,
         method: 'DELETE',
-        data: payload
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: payload.ProductId
       })
-        .then(data => console.log(data))
+        .then(data => { 
+          context.dispatch('getOrder')
+          console.log(data)
+        })
         .catch(err => console.log(err))
     },
+    getHistory (context) {
+      axios({
+        url: `/cart/history`,
+        method: 'GET',
+        headers: {
+          access_token: localStorage.access_token
+        }
+      })
+        .then(({data}) => {
+          console.log(data, '===get history');
+          // context.commit('setOrders', data)
+        })
+        .catch(err => console.log(err, 'err read history'))
+    },
+    getDetails (context, payload) {
+      context.commit('setDetail', payload)
+      router.push(`/products/${payload.id}`)
+    },
+    checkout (context, id) {
+      axios({
+        url: '/cart/checkout',
+        method: 'PUT',
+        headers: {
+          access_token: localStorage.access_token
+        },
+        data: id
+      })
+        .then (data => console.log('checkout success'))
+        .catch(err => console.log(err, 'err checkout'))
+    }
   },
   modules: {
   }

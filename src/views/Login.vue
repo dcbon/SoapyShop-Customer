@@ -56,9 +56,9 @@
               <FormulateInput
                 type="submit"
                 label="Sign In"
-                input-class="btn btn-primary"
+                input-class="btn btn-dark"
               />
-              <small class="form-text text-muted">Didn't have an account? <a class="" @click.prevent="changePage">Sign up here.</a></small>
+              <small class="form-text text-muted">Didn't have an account? <a class="link-mve" @click.prevent="changePage">Sign up here.</a></small>
             </FormulateForm>
           </div>
         </div>

@@ -6,8 +6,8 @@
       <div class="col p-2" v-for="product in products" :key="product.id">
         <div class="card border-0" style="width: 18rem;">
           <img :src="product.image_url" class="card-img-top" alt="...">
-          <div href="" class="q-view btn " data-toggle="modal" data-target="#exampleModal" @click.prevent="qview(product.id, product.name, product.price, product.stock, product.image_url)">Quick View</div>
-          <h5 class="text-center small">{{product.name}}</h5>
+          <div href="" class="q-view btn " data-toggle="modal" data-target="#exampleModal" @click.prevent="qview(product.id, product.name, product.price, product.stock, product.image_url, product.rating, product.description)">Quick View</div>
+          <a class="text-center small h5 link-mve"  @click.prevent="toDetails(product.ProductId)">{{product.name}}</a>
           <p class="text-center small">Rp {{ new Intl.NumberFormat('de-DE').format(product.price) }}</p>
         </div>
       </div>
@@ -29,12 +29,12 @@
                 <div class="small mb-4">{{stock}} available stock</div>
                 <div class="btm">
                   <div class="input-group mb-2">
-                    <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-minus" @click.prevent="decrease"></span></button>
+                    <button class="btn btn-dark" type="button" id="button-addon1"><span class="fas fa-minus" @click.prevent="decrease"></span></button>
                     <input disabled :value="amount || 0" type="number" class="form-control text-center" placeholder="1" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                    <button class="btn btn-outline-dark" type="button" id="button-addon1"><span class="fas fa-plus" @click.prevent="increase"></span></button>
+                    <button class="btn btn-dark" type="button" id="button-addon1"><span class="fas fa-plus" @click.prevent="increase"></span></button>
                   </div>
                   <div class="btn btn-dark btn-block mb-2" @click.prevent="addToCart">Add to cart</div>
-                  <a href="" class="small" @click.prevent="">View More Details</a>
+                  <a href="" class="link-mve" @click.prevent="toDetails(id)">View More Details</a> 
                 </div>
               </div>
             </div>
@@ -56,6 +56,8 @@ export default {
       price: '',
       stock: '',
       img: '',
+      rating: 0,
+      description: '',
       amount: 0
     }
   },
@@ -68,12 +70,14 @@ export default {
     },
   },
   methods: {
-    qview(id, name, price, stock, img) {
+    qview(id, name, price, stock, img, rate, desc) {
       this.id = id
       this.name = name
       this.price = price
       this.stock = stock
       this.img = img
+      this.rating = rate,
+      this.description = desc
     },
     decrease () {
       if (this.amount !== 0) this.amount = this.amount-1
@@ -83,7 +87,8 @@ export default {
       else this.amount = this.amount+1
     },
     addToCart () {
-      if (!this.amount) {
+      console.log(this.amount, 'amount');
+      if (this.amount) {
         let payload = {
           UserId: localStorage.id,
           ProductId: this.id,
@@ -93,6 +98,19 @@ export default {
         this.$store.dispatch('addToCart', payload)
         $('#exampleModal').modal('hide')
       }
+    },
+    toDetails (id) {
+      let payload = {
+        id: this.id ,
+        name: this.name ,
+        price: this.price ,
+        stock: this.stock ,
+        img: this.img,
+        rate: this.rating,
+        desc: this.description
+      }
+      this.$store.dispatch('getDetails', payload)
+      $('#exampleModal').modal('hide')
     }
   },
   created () {
